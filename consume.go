@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func consume(topic Topic, readDeadline time.Time) ([]byte, error) {
+func Consume(topic Topic, readDeadline time.Time) ([]byte, error) {
 	conn, err := kafka.DialLeader(context.Background(), "tcp", topic.Leader, topic.Topic, topic.Partition)
 	if err != nil {
 		log.Fatal("failed to dial leader:", err)
