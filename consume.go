@@ -3,6 +3,7 @@ package kafka
 import (
 	"context"
 	"github.com/Shopify/sarama"
+	"github.com/ronappleton/gk-kafka/events"
 	"log"
 	"os"
 	"os/signal"
@@ -121,6 +122,7 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 		case message := <-claim.Messages():
 			log.Printf("Message claimed: value = %s, timestamp = %v, topic = %s", string(message.Value), message.Timestamp, message.Topic)
 			session.MarkMessage(message, "")
+			events.MessageReceived.Trigger(*message)
 
 		case <-session.Context().Done():
 			return nil
