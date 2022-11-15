@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/Shopify/sarama v1.37.2
+	github.com/gookit/event v1.0.6
 	github.com/segmentio/kafka-go v0.4.38
 )
 
