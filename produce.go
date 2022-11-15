@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func Produce(message []byte, topic Topic, writeDeadline time.Time) {
+func Produce(key []byte, message []byte, topic Topic, writeDeadline time.Time) {
 	conn, err := kafka.DialLeader(context.Background(), "tcp", topic.Leader, topic.Topic, topic.Partition)
 	if err != nil {
 		log.Fatal("failed to dial leader:", err)
@@ -17,7 +17,7 @@ func Produce(message []byte, topic Topic, writeDeadline time.Time) {
 		log.Fatal("failed to set write deadline")
 	}
 	_, err = conn.WriteMessages(
-		kafka.Message{Value: message},
+		kafka.Message{Key: key, Value: message},
 	)
 	if err != nil {
 		log.Fatal("failed to write messages:", err)
