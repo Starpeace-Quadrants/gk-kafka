@@ -125,6 +125,7 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 			events.MessageReceived.Trigger(events.MessageReceivedPayload{
 				Message: *message,
 			})
+			log.Println("event fired to handle message")
 
 		case <-session.Context().Done():
 			return nil
