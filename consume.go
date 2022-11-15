@@ -121,7 +121,7 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 		select {
 		case message := <-claim.Messages():
 			session.MarkMessage(message, "")
-			event.MustFire("messageReceived", event.M{"message": string(message.Value)})
+			event.MustFire("messageReceived", event.M{"key": string(message.Key), "message": string(message.Value)})
 			log.Println("event fired to handle message")
 
 		case <-session.Context().Done():
