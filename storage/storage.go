@@ -2,6 +2,7 @@ package storage
 
 import (
 	"encoding/json"
+	"github.com/Shopify/sarama"
 )
 
 type KeyValueStoreAccess interface {
@@ -17,9 +18,12 @@ type KeyValueStoreAccess interface {
 	GetInt64(key string) int64
 	GetFloat32(key string) float32
 	GetFloat64(key string) float64
+	SetMessage(message sarama.ConsumerMessage)
+	GetMessage() sarama.ConsumerMessage
 	Set(key string, val interface{})
 	Flush()
 	Delete(key string)
+	Populate(data map[string]interface{})
 }
 
 type Storage struct {
@@ -94,8 +98,16 @@ func (s *Storage) GetFloat64(key string) float64 {
 	return s.data[key].(float64)
 }
 
+func (s *Storage) GetMessage() sarama.ConsumerMessage {
+	return s.data["message"].(sarama.ConsumerMessage)
+}
+
 func (s *Storage) Set(key string, val interface{}) {
 	s.data[key] = val
+}
+
+func (s *Storage) SetMessage(message sarama.ConsumerMessage) {
+	s.Set("message", message)
 }
 
 func (s *Storage) Flush() {
@@ -104,4 +116,12 @@ func (s *Storage) Flush() {
 
 func (s *Storage) Delete(key string) {
 	delete(s.data, key)
+}
+
+func (s *Storage) Populate(data map[string]interface{}) {
+	s.Flush()
+
+	for key, value := range data {
+		s.Set(key, value)
+	}
 }
