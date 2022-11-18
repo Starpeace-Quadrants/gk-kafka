@@ -3,6 +3,7 @@ package kafka
 import (
 	"fmt"
 	"github.com/segmentio/kafka-go"
+	"log"
 )
 
 func FetchTopics(host string, port int) ([]Topic, error) {
@@ -24,6 +25,7 @@ func FetchTopics(host string, port int) ([]Topic, error) {
 		if len(p.Leader.Host) == 0 {
 			p.Leader.Host = host
 		}
+		log.Println("Kakfa Topic Leader: ", p.Leader.Host)
 		topics = append(topics, Topic{
 			Topic:     p.Topic,
 			Leader:    fmt.Sprintf("%s:%d", p.Leader.Host, p.Leader.Port),
