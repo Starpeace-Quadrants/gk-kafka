@@ -19,10 +19,9 @@ func FetchTopics(host string, port int) ([]Topic, error) {
 	}
 
 	for _, p := range partitions {
-		log.Println("Kakfa Topic Leader: ", p.Leader.Host)
 		topics = append(topics, Topic{
 			Topic:     p.Topic,
-			Leader:    fmt.Sprintf("%s:%d", "kafka", "9092"),
+			Leader:    fmt.Sprintf("%s:%s", "kafka", "9092"),
 			Partition: p.ID,
 		})
 	}
