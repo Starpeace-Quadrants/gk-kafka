@@ -21,6 +21,9 @@ func FetchTopics(host string, port int) ([]Topic, error) {
 	}
 
 	for _, p := range partitions {
+		if len(p.Leader.Host) == 0 {
+			p.Leader.Host = host
+		}
 		topics = append(topics, Topic{
 			Topic:     p.Topic,
 			Leader:    fmt.Sprintf("%s:%d", p.Leader.Host, p.Leader.Port),
