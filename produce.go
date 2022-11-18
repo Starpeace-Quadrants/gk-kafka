@@ -10,7 +10,7 @@ import (
 func Produce(key []byte, message []byte, topic Topic, writeDeadline time.Time) {
 	conn, err := kafka.DialLeader(context.Background(), "tcp", topic.Leader, topic.Topic, topic.Partition)
 	if err != nil {
-		log.Fatal("failed to dial leader:", err)
+		log.Fatal("kafka-go produce failed to dial leader:", err)
 	}
 
 	if err := conn.SetWriteDeadline(writeDeadline); err != nil {
