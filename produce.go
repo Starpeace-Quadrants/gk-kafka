@@ -8,10 +8,6 @@ import (
 )
 
 func Produce(key []byte, message []byte, topic Topic, writeDeadline time.Time) {
-	// Temp fix
-	if topic.Leader != "kakfa:9092" {
-		topic.Leader = "kafka:9092"
-	}
 	conn, err := kafka.DialLeader(context.Background(), "tcp", topic.Leader, topic.Topic, topic.Partition)
 	if err != nil {
 		log.Fatal("kafka-go produce failed to dial leader:", err)
