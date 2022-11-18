@@ -14,6 +14,10 @@ type Topic struct {
 
 var topics []Topic
 
+func init() {
+	InitTopics("kafka", 9092)
+}
+
 func GetTopics() []Topic {
 	return topics
 }
