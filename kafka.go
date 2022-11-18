@@ -6,6 +6,9 @@ import (
 )
 
 func FetchTopics(host string, port int) ([]Topic, error) {
+	if len(host) == 0 {
+		host = "kafka"
+	}
 	conn, err := kafka.Dial("tcp", fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		return nil, err
@@ -20,7 +23,7 @@ func FetchTopics(host string, port int) ([]Topic, error) {
 	for _, p := range partitions {
 		topics = append(topics, Topic{
 			Topic:     p.Topic,
-			Leader:    fmt.Sprintf("%s:%d", "kafka", p.Leader.Port),
+			Leader:    fmt.Sprintf("%s:%d", p.Leader.Host, p.Leader.Port),
 			Partition: p.ID,
 		})
 	}
