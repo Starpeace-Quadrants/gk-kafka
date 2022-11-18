@@ -27,5 +27,6 @@ func FetchTopics(host string, port int) ([]Topic, error) {
 		})
 	}
 
+	log.Printf("Topic: %+v", topics)
 	return topics, nil
 }
