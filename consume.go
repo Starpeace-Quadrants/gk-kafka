@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"context"
+	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/gookit/event"
 	"log"
@@ -122,7 +123,7 @@ func (consumer *Consumer) ConsumeClaim(session sarama.ConsumerGroupSession, clai
 		case message := <-claim.Messages():
 			session.MarkMessage(message, "")
 			event.MustFire("messageReceived", event.M{"key": string(message.Key), "message": *message})
-			log.Println("event fired to handle message")
+			log.Println(fmt.Sprintf("event fired to handle %s message", message.Topic))
 
 		case <-session.Context().Done():
 			return nil
